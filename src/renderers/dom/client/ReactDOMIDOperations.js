@@ -18,6 +18,7 @@ var ReactMount = require('ReactMount');
 var ReactPerf = require('ReactPerf');
 
 var invariant = require('invariant');
+var ExecutionEnvironment = require("ExecutionEnvironment");
 
 
 /**
@@ -58,6 +59,17 @@ var ReactDOMIDOperations = {
     // from the DOM node instead of inadvertantly setting to a string. This
     // brings us in line with the same behavior we have on initial render.
     if (value != null) {
+        // IE7 fix: for input and textarea we set data-ie8_value attribute first
+        // to distinguish value setter made by JS from user event value changes
+        if (ExecutionEnvironment.canUseDOM && !!window.attachEvent
+          && name === 'value'
+          && (node.tagName === 'INPUT' || node.tagName === 'TEXTAREA')) {
+        DOMPropertyOperations.setValueForProperty(
+          node,
+          'data-ie8_value',
+          value
+        );
+      }
       DOMPropertyOperations.setValueForProperty(node, name, value);
     } else {
       DOMPropertyOperations.deleteValueForProperty(node, name);
