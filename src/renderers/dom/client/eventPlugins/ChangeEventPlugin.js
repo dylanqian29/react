@@ -151,52 +151,35 @@ if (ExecutionEnvironment.canUseDOM) {
   );
 }
 
-/**
- * (For old IE.) Replacement getter/setter for the `value` property that gets
- * set on the active element.
- */
-var newValueProp = {
-  get: function() {
-    return activeElementValueProp.get.call(this);
-  },
-  set: function(val) {
-    // Cast to a string so we can do equality checks.
-    activeElementValue = '' + val;
-    activeElementValueProp.set.call(this, val);
-  },
-};
 
 /**
  * (For old IE.) Starts tracking propertychange events on the passed-in element
  * and override the value property so that we can distinguish user events from
  * value changes in JS.
+ * IE7 fix: cHanged behaviour choncerning IE7 does not support getter and setter
+ * To distinguish user events from value changes in JS special DOM attribute
+ * data-ie8_value is used
  */
 function startWatchingForValueChange(target, targetID) {
   activeElement = target;
   activeElementID = targetID;
   activeElementValue = target.value;
-  activeElementValueProp = Object.getOwnPropertyDescriptor(
-    target.constructor.prototype,
-    'value'
-  );
 
   // Not guarded in a canDefineProperty check: IE8 supports defineProperty only
   // on DOM elements
-  Object.defineProperty(activeElement, 'value', newValueProp);
   activeElement.attachEvent('onpropertychange', handlePropertyChange);
 }
 
 /**
  * (For old IE.) Removes the event listeners from the currently-tracked element,
  * if any exists.
+ * IE7 fix: do not need to delete value attribute anymore
  */
 function stopWatchingForValueChange() {
   if (!activeElement) {
     return;
   }
 
-  // delete restores the original property definition
-  delete activeElement.value;
   activeElement.detachEvent('onpropertychange', handlePropertyChange);
 
   activeElement = null;
@@ -213,6 +196,13 @@ function handlePropertyChange(nativeEvent) {
   if (nativeEvent.propertyName !== 'value') {
     return;
   }
+  // IE7 fix: check if JS value change was made.
+  // True if value and data-ie8_value attribute are equal
+  var oldvalue = nativeEvent.srcElement.getAttribute('data-ie8_value');
+  if (oldvalue !== activeElementValue) {
+    activeElementValue = oldvalue;
+  }
+  
   var value = nativeEvent.srcElement.value;
   if (value === activeElementValue) {
     return;
