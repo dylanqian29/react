@@ -1,6 +1,5 @@
 {
-  "name": "react",
-  "private": true,
+  "name": "@onelogin/react",
   "version": "0.14.9",
   "devDependencies": {
     "babel": "^5.8.3",
@@ -14,7 +13,6 @@
     "envify": "^3.0.0",
     "eslint": "^1.5.1",
     "eslint-plugin-react": "^3.4.2",
-    "eslint-plugin-react-internal": "file:eslint-rules",
     "fbjs": "^0.6.1",
     "fbjs-scripts": "^0.2.0",
     "grunt": "^0.4.5",
@@ -76,5 +74,22 @@
     "unmockedModulePathPatterns": [
       ""
     ]
-  }
+  },
+  "description": "React is a JavaScript library for building user interfaces.",
+  "main": "Gruntfile.js",
+  "directories": {
+    "doc": "docs",
+    "example": "examples"
+  },
+  "dependencies": {},
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dylanqian29/react.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/dylanqian29/react/issues"
+  },
+  "homepage": "https://github.com/dylanqian29/react#readme"
 }

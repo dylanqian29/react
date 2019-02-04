@@ -5526,11 +5526,6 @@
       "from": "eslint-plugin-react@>=3.4.2 <4.0.0",
       "resolved": "https://registry.npmjs.org/eslint-plugin-react/-/eslint-plugin-react-3.5.1.tgz"
     },
-    "eslint-plugin-react-internal": {
-      "version": "0.0.0",
-      "from": "eslint-rules",
-      "resolved": "file:eslint-rules"
-    },
     "fbjs": {
       "version": "0.6.1",
       "from": "fbjs@>=0.6.1 <0.7.0",
